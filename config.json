@@ -1,0 +1,25 @@
+{
+  "logFiles": [
+    {
+      "id": "shopbill",
+      "path" : "D:\\Projects\\Hta\\LogVisualizer\\test_logs\\gateway_shopbill.log",
+      "log_separator_regex": "/[\\+]{3,}/",
+      "info_part_regex": ".*local\\.\\w+\\:.*?\\{",
+      "lastModified": ""
+    },
+    {
+      "id": "request",
+      "path" : "D:\\Projects\\Hta\\LogVisualizer\\test_logs\\gateway_request.log",
+      "logSeparatorRegex": "/[\\+]{3,}/",
+      "infoPartRegex": ".*local\\.\\w+\\:.*?\\{",
+      "lastModified": ""
+    },
+    {
+      "id": "payee",
+      "path" : "D:\\Projects\\Hta\\LogVisualizer\\test_logs\\gateway_payee.log",
+      "logSeparatorRegex": "/[\\+]{3,}/",
+      "infoPartRegex": ".*local\\.\\w+\\:.*?\\{",
+      "lastModified": ""
+    }
+  ]
+}
