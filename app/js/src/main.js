@@ -34,11 +34,8 @@ window.onload = async function() {
     }
 
     await getConfigData();
-    if (!config.files) {
-        console.log("Error: no log files");
-    }
     //initFilters();
-    readLogs();
+    await readLogs();
 }
 
 function monitor() {
@@ -71,10 +68,12 @@ async function getConfigData() {
     config.filters = appFilters;
 }
 
-function readLogs() {
+async function readLogs() {
     let logElems = [];
+    let temElems;
     for (let i = 0; i < config.files.length; i++) {
-        logElems.push(... getLogElems(config.files[i]));
+        temElems = await getLogElems(config.files[i]);
+        logElems = logElems.concat(temElems);
     }
     logElems.sort(function(a, b) {
         if (a.getAttribute('data-log-time') > b.getAttribute('data-log-time')) return 1;
@@ -84,23 +83,24 @@ function readLogs() {
     appendElems(config.logsContainer, logElems)
 }
 
-function appendElems(target, elems) {
+function appendElems(targetData, elems) {
+    let target = document.getElementById(targetData.id);
     elems.forEach(function(elem) {
         target.appendChild(elem);
     });
 }
 
-function getLogElems(filesArr) {
+async function getLogElems(filesArr) {
     var logElem;
     var logHeaderElem;
     var logBodyElem;
     var elemsArr = [];
 
-    let logData = getLogData(filesArr);
+    let logData = await getLogData(filesArr);
     for (var logName in logData) {
         for (var i = 0; i < logData[logName].length; i++) {
             logElem = document.createElement('div');
-            logElem.setAttribute('data-file-id', logName);
+            logElem.setAttribute('data-file-id', logData[logName][i].logType);
 
             logHeaderElem = document.createElement('div');
             logBodyElem = document.createElement('div');
@@ -154,10 +154,11 @@ async function getLogData(postData) {
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify(postData)
+        body: JSON.stringify([postData])
     });
 
-    return await response.json();
+    let res = await response.json();
+    return res;
 }
 
 function logElemClicked(e) {
@@ -218,9 +219,6 @@ function filterLogs(e) {
 function updateView() {
 
     var logItemsColl = document.querySelectorAll('.log-item');
-
-    //console.log(logItemsColl.length);
-
     for (var i = 0; i < logItemsColl.length; i++) {
         if (isfiltrationEnabled()) {
             if (!config.filters[logItemsColl[i].getAttribute('data-file-id')]) {

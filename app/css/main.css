@@ -81,12 +81,14 @@ body {
     overflow-y: hidden;
     overflow-x: auto;
     height: 0;
+    padding-left: 10px;
 }
 
 .selected .log-item-body {
     height: auto;
     background-color: #373636;
     color: #fff;
+    padding-top: 10px;
 }
 
 .selected .log-item-header {

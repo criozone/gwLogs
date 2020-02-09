@@ -3,10 +3,13 @@ namespace App;
 
 use \Bramus\Router\Router;
 use App\LogReader;
+use App\Logger;
 
 class Application
 {
     protected $config;
+    protected $reader;
+    protected $logger;
 
     public function __construct()
     {
@@ -14,6 +17,7 @@ class Application
         $this->reader = new LogReader();
         $pgClasses = require (ROOT_PATH . DIRECTORY_SEPARATOR . 'storage' . DIRECTORY_SEPARATOR . 'pg_classes.php');
         $this->reader->setClasses($pgClasses);
+        $this->logger = new Logger($this->config);
     }
 
     protected function jsonResponse($data) {
@@ -26,7 +30,7 @@ class Application
     }
 
     public function run() {
-        echo "App running";
+        echo file_get_contents(realpath(ROOT_PATH . DIRECTORY_SEPARATOR . 'index.html'));
     }
 
     public function getConfig() {
@@ -36,9 +40,20 @@ class Application
     }
 
     public function getLogs() {
+        $this->logger->info("Incoming 'get-logs' request");
         $filesToScan = json_decode(file_get_contents('php://input'));
+        if (!is_array($filesToScan) || empty($filesToScan)) {
+            $this->jsonResponse([
+                "result" => false,
+                "errorData" => [
+                    "errorCode" => 1111,
+                    "errorMsg" => "Empty request data."
+                ]
+            ]);
+        }
         $retData = [];
         foreach ($this->config['logFiles'] as $fConfig) {
+            $this->logger->info($fConfig['id']);
             if (in_array($fConfig['id'], $filesToScan)) {
                 $this->reader->read($retData, $fConfig);
             }
@@ -50,10 +65,21 @@ class Application
     }
 
     public function clearLogs() {
+        $filesToClear = json_decode(file_get_contents('php://input'));
+        $clearedFiles = [];
         foreach ($this->config['logFiles'] as $fileData) {
-            file_get_contents($fileData['path'], '');
+            if (!in_array($fileData['id'], $filesToClear)) {
+                continue;
+            }
+            try{
+                //file_put_contents($fileData['path'], '');
+            } catch (\Exception $e) {
+                // log error and continue;
+                continue;
+            }
+            array_push($clearedFiles, $fileData['id']);
         }
-        $this->jsonResponse(["result" => true]);
+        $this->jsonResponse($clearedFiles);
     }
 
     public function createClassMap() {

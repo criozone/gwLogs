@@ -2,24 +2,27 @@
   "logFiles": [
     {
       "id": "shopbill",
-      "path" : "D:\\Projects\\Hta\\LogVisualizer\\test_logs\\gateway_shopbill.log",
+      "path" : "d:\\OSPanel\\domains\\gwlogs.local\\test_logs\\gateway_shopbill.log",
       "log_separator_regex": "/[\\+]{3,}/",
       "info_part_regex": ".*local\\.\\w+\\:.*?\\{",
       "lastModified": ""
     },
     {
       "id": "request",
-      "path" : "D:\\Projects\\Hta\\LogVisualizer\\test_logs\\gateway_request.log",
+      "path" : "d:\\OSPanel\\domains\\gwlogs.local\\test_logs\\gateway_request.log",
       "logSeparatorRegex": "/[\\+]{3,}/",
       "infoPartRegex": ".*local\\.\\w+\\:.*?\\{",
       "lastModified": ""
     },
     {
       "id": "payee",
-      "path" : "D:\\Projects\\Hta\\LogVisualizer\\test_logs\\gateway_payee.log",
+      "path" : "d:\\OSPanel\\domains\\gwlogs.local\\test_logs\\gateway_payee.log",
       "logSeparatorRegex": "/[\\+]{3,}/",
       "infoPartRegex": ".*local\\.\\w+\\:.*?\\{",
       "lastModified": ""
     }
-  ]
+  ],
+  "logger": {
+    "fileName": "D:\\OSPanel\\domains\\gwlogs.local\\storage\\logs\\app.log"
+  }
 }

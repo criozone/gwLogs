@@ -13,7 +13,7 @@ $router->setNamespace('\App');
 $router->get('/', 'Application@run');
 $router->get('/get-config-data', 'Application@getConfig');
 $router->post('/get-logs', 'Application@getLogs');
-$router->get('/clear-logs', 'Application@clearLogs');
+$router->post('/clear-logs', 'Application@clearLogs');
 $router->get('/class-map', 'Application@createClassMap');
 
 
